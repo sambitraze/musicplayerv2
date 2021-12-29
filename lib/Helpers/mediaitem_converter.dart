@@ -36,7 +36,7 @@ class MediaItemConverter {
       duration: Duration(
         seconds: int.parse(
           (song['duration'] == null || song['duration'] == 'null')
-              ? '180'
+              ? '20'
               : song['duration'].toString(),
         ),
       ),

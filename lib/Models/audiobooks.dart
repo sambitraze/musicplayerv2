@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final audioBook = audioBookFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<AudioBook> audioBookFromJson(String str) => List<AudioBook>.from(json.decode(str).map((x) => AudioBook.fromJson(x)));
@@ -9,7 +14,6 @@ class AudioBook {
         required this.id,
         required this.status,
         required this.dateCreated,
-        required this.dateUpdated,
         required this.name,
         required this.publisher,
         required this.author,
@@ -24,7 +28,6 @@ class AudioBook {
     int id;
     String status;
     DateTime dateCreated;
-    DateTime dateUpdated;
     String name;
     String publisher;
     String author;
@@ -39,14 +42,13 @@ class AudioBook {
         id: json["id"],
         status: json["status"],
         dateCreated: DateTime.parse(json["date_created"]),
-        dateUpdated: DateTime.parse(json["date_updated"]),
         name: json["name"],
         publisher: json["publisher"],
         author: json["author"],
         tags: List<String>.from(json["tags"].map((x) => x)),
         cover: json["cover"],
         description: json["description"],
-        audiolists: List<Audiolist>.from(json["audiolists"].map((x) => Audiolist.fromJson(x))),
+        audiolists: List<Audiolist>.from(json["audiolists"].map((x) => Audiolist.fromJson(x["audiofile_id"]))),
         category: Category.fromJson(json["category"]),
         reader: Reader.fromJson(json["reader"]),
     );
@@ -55,7 +57,6 @@ class AudioBook {
         "id": id,
         "status": status,
         "date_created": dateCreated.toIso8601String(),
-        "date_updated": dateUpdated.toIso8601String(),
         "name": name,
         "publisher": publisher,
         "author": author,
@@ -71,24 +72,36 @@ class AudioBook {
 class Audiolist {
     Audiolist({
         required this.id,
-        required this.audioBooksId,
-        required this.directusFilesId,
+        required this.title,
+        required this.hour,
+        required this.minutes,
+        required this.seconds,
+        required this.file,
     });
 
-    int id;
-    int audioBooksId;
-    String directusFilesId;
+    String id;
+    String title;
+    String hour;
+    String minutes;
+    String seconds;
+    String file;
 
     factory Audiolist.fromJson(Map<String, dynamic> json) => Audiolist(
         id: json["id"],
-        audioBooksId: json["AudioBooks_id"],
-        directusFilesId: json["directus_files_id"],
+        title: json["title"],
+        hour: json["hour"],
+        minutes: json["minutes"],
+        seconds: json["seconds"],
+        file: json["file"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "AudioBooks_id": audioBooksId,
-        "directus_files_id": directusFilesId,
+        "title": title,
+        "hour": hour,
+        "minutes": minutes,
+        "seconds": seconds,
+        "file": file,
     };
 }
 
@@ -124,8 +137,6 @@ class Reader {
     Reader({
         required this.id,
         required this.status,
-        required this.dateCreated,
-        required this.dateUpdated,
         required this.name,
         required this.followers,
         required this.email,
@@ -134,8 +145,6 @@ class Reader {
 
     int id;
     String status;
-    DateTime dateCreated;
-    dynamic dateUpdated;
     String name;
     int followers;
     String email;
@@ -144,8 +153,6 @@ class Reader {
     factory Reader.fromJson(Map<String, dynamic> json) => Reader(
         id: json["id"],
         status: json["status"],
-        dateCreated: DateTime.parse(json["date_created"]),
-        dateUpdated: json["date_updated"],
         name: json["name"],
         followers: json["followers"],
         email: json["email"],
@@ -155,8 +162,6 @@ class Reader {
     Map<String, dynamic> toJson() => {
         "id": id,
         "status": status,
-        "date_created": dateCreated.toIso8601String(),
-        "date_updated": dateUpdated,
         "name": name,
         "followers": followers,
         "email": email,

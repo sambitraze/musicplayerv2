@@ -138,7 +138,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
         if (recommend && item.extras!['autoplay'] as bool) {
           Future.delayed(const Duration(seconds: 5), () async {
-            final List value = await AudioBookService.getAudioBooks(item.id);
+            final List value = await AudioBookService.getAudioBooksById(item.id);
 
             for (int i = 0; i < value.length; i++) {
               final element = MediaItemConverter.mapToMediaItem(

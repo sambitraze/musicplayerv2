@@ -297,7 +297,7 @@ class _AlbumDownloadButtonState extends State<AlbumDownloadButton> {
                           'downingAlbum "${widget.albumName}"',
                         );
 
-                        data = await AudioBookService.getAudioBooks(widget.albumId);
+                        data = await AudioBookService.getAudioBooksById(widget.albumId);
                         for (final items in data) {
                           down.prepareDownload(
                             context,
